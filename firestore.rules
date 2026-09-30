@@ -1,0 +1,140 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn()
+        && request.auth.uid == userId;
+    }
+
+    function isOrganizer() {
+      return isSignedIn()
+        && get(
+          /databases/$(database)/documents/users/$(request.auth.uid)
+        ).data.role == "organizer";
+    }
+
+    function isEventOrganizer(eventId) {
+      return isSignedIn()
+        && get(
+          /databases/$(database)/documents/events/$(eventId)
+        ).data.organizerId == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+
+      allow create: if isOwner(userId);
+
+      allow update: if isOwner(userId);
+
+      allow delete: if false;
+    }
+
+    match /events/{eventId} {
+
+      // Everyone logged in can view events.
+      allow read: if isSignedIn();
+
+      // Only organizers can create events.
+      allow create: if isSignedIn()
+        && isOrganizer()
+        && request.resource.data.organizerId == request.auth.uid;
+
+      // Organizer can update any event fields.
+      allow update: if isSignedIn()
+        && resource.data.organizerId == request.auth.uid;
+
+      // Attendees can update ONLY RSVP-related fields.
+      allow update: if isSignedIn()
+        && resource.data.organizerId != request.auth.uid
+        && request.resource.data.organizerId == resource.data.organizerId
+        && request.resource.data.eventName == resource.data.eventName
+        && request.resource.data.description == resource.data.description
+        && request.resource.data.eventType == resource.data.eventType
+        && request.resource.data.eventDate == resource.data.eventDate
+        && request.resource.data.startTime == resource.data.startTime
+        && request.resource.data.endTime == resource.data.endTime
+        && request.resource.data.venue == resource.data.venue
+        && request.resource.data.onlineLink == resource.data.onlineLink
+        && request.resource.data.maximumCapacity == resource.data.maximumCapacity
+        && request.resource.data.registrationDeadline == resource.data.registrationDeadline
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          "goingCount",
+          "maybeCount",
+          "notGoingCount",
+          "status",
+          "updatedAt"
+        ])
+        && request.resource.data.goingCount >= 0
+        && request.resource.data.maybeCount >= 0
+        && request.resource.data.notGoingCount >= 0
+        && request.resource.data.goingCount <= request.resource.data.maximumCapacity
+        && request.resource.data.status in [
+          "PUBLISHED",
+          "FULL"
+        ];
+
+      // Only organizer can delete event.
+      allow delete: if isSignedIn()
+        && resource.data.organizerId == request.auth.uid;
+
+
+      // =========================
+      // RSVP DOCUMENTS
+      // =========================
+
+      match /rsvps/{userId} {
+
+        // Attendee can read their own RSVP.
+        allow read: if isOwner(userId);
+
+        // Attendee can create their own RSVP.
+        allow create: if isOwner(userId)
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.status in [
+            "GOING",
+            "MAYBE",
+            "NOT_GOING"
+          ];
+
+        // Attendee can change their own RSVP.
+        allow update: if isOwner(userId)
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.status in [
+            "GOING",
+            "MAYBE",
+            "NOT_GOING"
+          ];
+
+        // Attendee can cancel their own RSVP.
+        allow delete: if isOwner(userId);
+      }
+
+
+      // =========================
+      // ANNOUNCEMENTS
+      // =========================
+
+      match /announcements/{announcementId} {
+
+        allow read: if isSignedIn();
+
+        allow create: if isSignedIn()
+          && isEventOrganizer(eventId)
+          && request.resource.data.organizerId == request.auth.uid;
+
+        allow delete: if isSignedIn()
+          && resource.data.organizerId == request.auth.uid;
+
+        allow update: if false;
+      }
+    }
+  }
+}
