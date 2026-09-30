@@ -132,6 +132,7 @@ The organizer dashboard provides:
                    │ Real-Time Event Data │
                    │ RSVP / Announcements │
                    └──────────────────────┘
+```
 Authentication
 
 Firebase Authentication is used to provide secure user authentication.
@@ -284,6 +285,7 @@ Security
 Firestore Security Rules control access to cloud data.
 
 📁 Project Structure
+```text
 Cloud-Event-RSVP-Tracker/
 │
 ├── .firebaserc
@@ -315,6 +317,7 @@ Cloud-Event-RSVP-Tracker/
         ├── authService.js
         ├── eventService.js
         └── rsvpService.js
+```
 🧪 Testing
 
 The following functionality was tested during development:
@@ -341,42 +344,47 @@ Firebase Hosting deployment	✅
 🚀 Local Development
 
 Clone the repository:
-
+```text
 git clone YOUR_GITHUB_REPOSITORY_URL
-
+```
 Navigate into the project:
-
+```text
 cd Cloud-Event-RSVP-Tracker
-
+```
 Install dependencies:
-
+```text
 npm install
-
+```
 Start the development server:
-
+```text
 npm run dev
-
+```
 The application will normally be available at:
-
+```text
 http://localhost:5173
 🏗️ Production Build
-
+```
 Create a production build:
-
+```text
 npm run build
+```
+
 ☁️ Firebase Deployment
 
 Deploy Firestore rules:
-
+```text
 firebase deploy --only firestore:rules
+```
 
 Deploy the frontend:
-
+```text
 firebase deploy --only hosting
-
+```
 Or deploy both:
-
+```text
 firebase deploy --only firestore:rules,hosting
+```
+
 📈 Future Enhancements
 
 Possible future improvements include:
@@ -394,6 +402,7 @@ Cloud Functions for trusted server-side RSVP processing
 Automated CI/CD deployment
 Monitoring and logging
 Multi-event reporting dashboard
+
 🎓 Learning Outcomes
 
 Through this project, I gained practical experience with:
