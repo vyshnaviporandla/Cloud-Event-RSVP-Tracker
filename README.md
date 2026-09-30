@@ -133,7 +133,7 @@ The organizer dashboard provides:
                    │ RSVP / Announcements │
                    └──────────────────────┘
 ```
-Authentication
+## Authentication
 
 Firebase Authentication is used to provide secure user authentication.
 
@@ -144,7 +144,7 @@ Attendee
 
 User profile information and role information are stored in Firestore.
 
-🗄️ Firestore Data Structure
+## Firestore Data Structure
 
 The application uses Cloud Firestore as its NoSQL database.
 
@@ -196,7 +196,8 @@ Example:
 }
 Announcements
 events/{eventId}/announcements/{announcementId}
-⚡ Real-Time RSVP
+
+## Real-Time RSVP
 
 The RSVP system uses Firestore transactions to update:
 
@@ -208,7 +209,7 @@ Event capacity status
 
 This helps maintain consistent counters when multiple users interact with an event.
 
-🚦 Capacity Management
+## Capacity Management
 
 Each event has a maximum capacity.
 
@@ -226,7 +227,7 @@ FULL
 
 This prevents additional GOING registrations through the application's capacity logic.
 
-📢 Announcements
+## Announcements
 
 Organizers can create announcements for their events.
 
@@ -234,7 +235,7 @@ Attendees can view announcements associated with the event.
 
 This provides a simple centralized communication mechanism.
 
-🔒 Security
+## Security
 
 Firestore Security Rules are used to control access.
 
@@ -248,7 +249,7 @@ Organizer announcements
 
 Sensitive environment variables are excluded from Git using .gitignore.
 
-☁️ Cloud Computing Concepts Demonstrated
+## Cloud Computing Concepts Demonstrated
 SaaS
 
 The application is accessed through a web browser without requiring users to install server infrastructure.
@@ -284,7 +285,7 @@ Security
 
 Firestore Security Rules control access to cloud data.
 
-📁 Project Structure
+## Project Structure
 ```text
 Cloud-Event-RSVP-Tracker/
 │
@@ -318,7 +319,7 @@ Cloud-Event-RSVP-Tracker/
         ├── eventService.js
         └── rsvpService.js
 ```
-🧪 Testing
+## Testing
 
 The following functionality was tested during development:
 
@@ -341,7 +342,8 @@ Analytics	✅
 Firestore rules deployment	✅
 Production build	✅
 Firebase Hosting deployment	✅
-🚀 Local Development
+
+## Local Development
 
 Clone the repository:
 ```text
@@ -362,14 +364,16 @@ npm run dev
 The application will normally be available at:
 ```text
 http://localhost:5173
-🏗️ Production Build
 ```
+
+## Production Build
+
 Create a production build:
 ```text
 npm run build
 ```
 
-☁️ Firebase Deployment
+ Firebase Deployment
 
 Deploy Firestore rules:
 ```text
@@ -385,9 +389,9 @@ Or deploy both:
 firebase deploy --only firestore:rules,hosting
 ```
 
-📈 Future Enhancements
+## Future Enhancements
 
-Possible future improvements include:
+### Possible future improvements include:
 
 Email notifications
 Push notifications
@@ -403,9 +407,9 @@ Automated CI/CD deployment
 Monitoring and logging
 Multi-event reporting dashboard
 
-🎓 Learning Outcomes
+## Learning Outcomes
 
-Through this project, I gained practical experience with:
+### Through this project, I gained practical experience with:
 
 React application development
 Firebase Authentication
@@ -419,8 +423,8 @@ Cloud deployment
 Role-based application design
 NoSQL database design
 Event-driven application concepts
-👨‍💻 Project
 
-Real-Time Cloud-Based Event Planning & RSVP Tracker
+ ## Project
 
+### Real-Time Cloud-Based Event Planning & RSVP Tracker
 Built as a Cloud Computing course project to demonstrate practical use of cloud services and real-time web application architecture.
